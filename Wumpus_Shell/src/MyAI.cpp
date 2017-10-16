@@ -17,8 +17,11 @@
 //                be lost when the tournament runs your code.
 // ======================================================================
 
+#include <iostream>
 #include "MyAI.hpp"
 #include "Map.hpp"
+
+using namespace std;
 
 MyAI::MyAI() : Agent()
 {
@@ -31,6 +34,8 @@ MyAI::MyAI() : Agent()
 	// ======================================================================
 }
 	
+// At every cell, agent only feels stench, breeze, and glitter.
+// At every cell, this function will get called
 Agent::Action MyAI::getAction
 (
 	bool stench,
@@ -44,7 +49,27 @@ Agent::Action MyAI::getAction
 	// YOUR CODE BEGINS
 	// ======================================================================
 	
-	return CLIMB;
+	for (int i = 0; i < 8; i++)
+	{
+		FORWARD;
+	}
+	if (stench)
+	{
+		cout << "There is a stench" << endl;
+	}	
+	if (breeze)
+	{
+		cout << "There is a breeze " << endl;
+	}
+	if (glitter)
+	{	
+		cout << "Im feeling the gold" << endl;
+	}
+	if (bump)
+	{
+		cout << "There is a wall" << endl;
+	}
+	return FORWARD;
 	// ======================================================================
 	// YOUR CODE ENDS
 	// ======================================================================
