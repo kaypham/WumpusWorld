@@ -49,9 +49,9 @@ Agent::Action MyAI::getAction
 	// YOUR CODE BEGINS
 	// ======================================================================
 	
-	for (int i = 0; i < 8; i++)
-	{
-		FORWARD;
+	if (glitter)
+	{	
+		return CLIMB;
 	}
 	if (stench)
 	{
@@ -61,15 +61,11 @@ Agent::Action MyAI::getAction
 	{
 		cout << "There is a breeze " << endl;
 	}
-	if (glitter)
-	{	
-		cout << "Im feeling the gold" << endl;
-	}
 	if (bump)
 	{
 		cout << "There is a wall" << endl;
 	}
-	return FORWARD;
+	return TURN_LEFT;
 	// ======================================================================
 	// YOUR CODE ENDS
 	// ======================================================================
