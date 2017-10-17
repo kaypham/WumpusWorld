@@ -21,6 +21,7 @@
 #define MYAI_LOCK
 
 #include "Agent.hpp"
+#include "Map.hpp"
 
 class MyAI : public Agent
 {
