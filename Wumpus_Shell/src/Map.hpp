@@ -21,6 +21,7 @@ struct Cell
 	bool visited;
 	float pitPresent;
 	float wumpusPresent;
+	int x, y;
 };
 
 // Keep track of the path agent has taken
@@ -42,23 +43,5 @@ public:
 	void Locate_Pit_And_Wumpus();
 
 };
-
-
-// Method definitions
-
-Map::Map()
-{
-	for(int x=0; x<10; x++)
-	{
-		map.push_back(vector<Cell>());		
-		for(int y=0; y<10; y++)
-		{
-			Cell c = {0};
-			map[x].push_back(c);
-		}
-	}
-}
-
-
 
 #endif //MAP

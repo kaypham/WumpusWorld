@@ -23,12 +23,12 @@
 
 using namespace std;
 
+
 MyAI::MyAI() : Agent()
 {
 	// ======================================================================
 	// YOUR CODE BEGINS
 	// ======================================================================
-	
 	// ======================================================================
 	// YOUR CODE ENDS
 	// ======================================================================
@@ -48,10 +48,14 @@ Agent::Action MyAI::getAction
 	// ======================================================================
 	// YOUR CODE BEGINS
 	// ======================================================================
-	
 	if (glitter)
 	{	
-		return CLIMB;
+		isBackTracking = true;
+		return backTrack();
+	}
+	if (isBackTracking)
+	{
+		return backTrack();
 	}
 	if (stench)
 	{
@@ -75,6 +79,12 @@ Agent::Action MyAI::getAction
 // YOUR CODE BEGINS
 // ======================================================================
 
+// This will call back_track function where it will use the path it comes from
+// to climb out of the maze
+// Note: agent can only climb out at cell (0, 0)
+Agent::Action MyAI::backTrack()
+{
+}
 
 // ======================================================================
 // YOUR CODE ENDS

@@ -23,7 +23,9 @@ RAW_SOURCES = \
 	RandomAI.hpp\
 	ManualAI.hpp\
 	World.cpp\
-	World.hpp
+	World.hpp\
+	Map.hpp\
+	Map.cpp
 
 SOURCE_DIR = src
 BIN_DIR = bin
