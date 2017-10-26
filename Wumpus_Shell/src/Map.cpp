@@ -28,3 +28,41 @@ Map::Map()
 		}
 	}
 }
+
+vector<Cell*> Map::getAdjacentCells(int x, int y)
+{
+	vector<Cell*> cells;
+	// make sure cell location is within bounds
+	if(x >= 0 && x <= 9 && y >= 0 && y <= 9)
+	{
+		// get Left
+		if(x > 0) // can't get left if 0
+		{
+			cells.push_back( &map.at(x-1).at(y) );
+		}
+		// get Down
+		if(y > 0) // can't get down if 0
+		{
+			cells.push_back( &map.at(x).at(y) );
+		}
+
+		// (note) for right and up, boundaries of actualworld may be smaller, but in that case, adjacent walls will be marked with a wall indication.
+		// get Right
+		if(x < 9) // can't get right if 9
+		{
+			cells.push_back( &map.at(x+1).at(y) );
+		}
+		// get Left
+		if(y < 9) // can't get left if 9
+		{
+			cells.push_back( &map.at(x).at(y+1) );
+		}
+	}
+	else
+	{
+		throw out_of_range("Map location out of bounds");
+	}
+
+	return cells;
+}
+

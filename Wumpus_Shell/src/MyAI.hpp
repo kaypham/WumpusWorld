@@ -41,6 +41,8 @@ public:
 	// YOUR CODE BEGINS
 	// ======================================================================
 	bool isBackTracking = false;
+
+	int loc[2];	
 	Map board;
 	
 	Action backTrack();

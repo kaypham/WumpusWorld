@@ -29,6 +29,8 @@ MyAI::MyAI() : Agent()
 	// ======================================================================
 	// YOUR CODE BEGINS
 	// ======================================================================
+	loc[0] = 0;
+	loc[1] = 0;
 	// ======================================================================
 	// YOUR CODE ENDS
 	// ======================================================================
@@ -51,7 +53,7 @@ Agent::Action MyAI::getAction
 	if (glitter)
 	{	
 		isBackTracking = true;
-		return backTrack();
+		return GRAB;	// grab the gold
 	}
 	if (isBackTracking)
 	{
@@ -60,6 +62,8 @@ Agent::Action MyAI::getAction
 	if (stench)
 	{
 		cout << "There is a stench" << endl;
+		// get adjacent spaces and assign probabilities to them
+		vector<Cell> adj_cells = board.getAdjacentCells(loc[0], loc[1]);
 	}	
 	if (breeze)
 	{

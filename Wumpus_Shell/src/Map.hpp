@@ -10,19 +10,11 @@
 #define MAP
 
 #include <vector>
+#include <stdexcept>
+#include "ProbHandle.hpp"
 
 using namespace std;
-
-// Describes the findings of each node
-struct Cell
-{
-	bool breeze; // used if pit or wumpus is 100% present?
-	bool stench;
-	bool visited;
-	float pitPresent;
-	float wumpusPresent;
-	int x, y;
-};
+ 
 
 // Keep track of the path agent has taken
 class Map
@@ -36,6 +28,9 @@ public:
 
 	// constructor
 	Map();
+
+	// returns cells of up to 4 adjacent locations on the Map to coordinates x and y
+	vector<Cell*> getAdjacentCells(int x, int y);
 
 	// After every move, call methods that can determine potential hazards in adjacent 
 	// judging from the map we have so far.
