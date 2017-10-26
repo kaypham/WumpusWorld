@@ -22,6 +22,7 @@
 
 #include "Agent.hpp"
 #include "Map.hpp"
+#include "ProbHandle.hpp"
 
 class MyAI : public Agent
 {
@@ -44,6 +45,7 @@ public:
 
 	int loc[2];	
 	Map board;
+	ProbHandle wumpusProb;
 	
 	Action backTrack();
 	// ======================================================================

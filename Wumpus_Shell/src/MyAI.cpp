@@ -63,8 +63,15 @@ Agent::Action MyAI::getAction
 	{
 		cout << "There is a stench" << endl;
 		// get adjacent spaces and assign probabilities to them
-		vector<Cell> adj_cells = board.getAdjacentCells(loc[0], loc[1]);
-	}	
+		vector<Cell*> adj_cells = board.getAdjacentCells(loc[0], loc[1]);
+		wumpusProb.addSuspects(adj_cells);
+	}
+	else	// if no stench is detected...
+	{
+		// remove suspect spaces if possible
+		vector<Cell*> adj_cells = board.getAdjacentCells(loc[0], loc[1]);
+		wumpusProb.removeSuspects(adj_cells);
+	}
 	if (breeze)
 	{
 		cout << "There is a breeze " << endl;
