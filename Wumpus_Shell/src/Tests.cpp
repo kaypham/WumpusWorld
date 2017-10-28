@@ -35,19 +35,22 @@ namespace Tests
 	{
 		bool condition = true;
 		Map m;
+		std::vector<Cell*> cells;		
 
-		vector<Cell*> cells = m.getAdjacentCells(5,5);
+		m.getAdjacentCells(5,5, cells);
 		
 		if(cells.size() != 4)
 		{
 			condition = false;
 		}
-		cells = m.getAdjacentCells(0,0);
+		cells.erase(cells.begin(), cells.end());
+		m.getAdjacentCells(0,0, cells);
 		if(cells.size() != 2)
 		{
 			condition = false;
 		}
-		cells = m.getAdjacentCells(9,9);
+		cells.erase(cells.begin(), cells.end());
+		m.getAdjacentCells(9,9, cells);
 		if(cells.size() != 2)
 		{
 			condition = false;
@@ -61,8 +64,9 @@ namespace Tests
 		bool condition = true;
 		Map m;
 		ProbHandle p;
-
-		p.addSuspects(m.getAdjacentCells(5,5));
+		std::vector<Cell*> cells;		
+		m.getAdjacentCells(5, 5, cells);
+		p.addSuspects(cells);
 		
 		if(	(int)m.map[4][5].wumpusPresent != 25 &&
 			(int)m.map[6][5].wumpusPresent != 25)
@@ -80,8 +84,11 @@ namespace Tests
 		Map m;
 		ProbHandle p;
 
-		p.addSuspects(m.getAdjacentCells(5,5));
-		p.removeSuspects(m.getAdjacentCells(5,5));
+		std::vector<Cell*> cells;
+		m.getAdjacentCells(5, 5, cells);
+
+		p.addSuspects(cells);
+		p.removeSuspects(cells);
 		if(p.suspectNumber() != 0)
 		{
 			condition = false;
@@ -96,9 +103,13 @@ namespace Tests
 		bool condition = true;
 		Map m;
 		ProbHandle p;
+		std::vector<Cell*> cells;
+		std::vector<Cell*> other_cells;
+		m.getAdjacentCells(5, 5, cells);
+		m.getAdjacentCells(3, 5, other_cells);
 
-		p.addSuspects(m.getAdjacentCells(5,5));
-		p.removeSuspects(m.getAdjacentCells(3,5));
+		p.addSuspects(cells);
+		p.removeSuspects(other_cells);
 		if(p.suspectNumber() != 3)
 		{
 			condition = false;

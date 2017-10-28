@@ -18,10 +18,8 @@
 // ======================================================================
 
 #include <iostream>
+#include <typeinfo>
 #include "MyAI.hpp"
-#include "Map.hpp"
-
-using namespace std;
 
 
 MyAI::MyAI() : Agent()
@@ -61,24 +59,25 @@ Agent::Action MyAI::getAction
 	}
 	if (stench)
 	{
-		cout << "There is a stench" << endl;
+		std::cout << "There is a stench" << std::endl;
 		// get adjacent spaces and assign probabilities to them
-		vector<Cell*> adj_cells = board.getAdjacentCells(loc[0], loc[1]);
-		wumpusProb.addSuspects(adj_cells);
+		//wumpusProb.addSuspects( board.getAdjacentCells(loc[0], loc[1]) );
 	}
 	else	// if no stench is detected...
 	{
 		// remove suspect spaces if possible
-		vector<Cell*> adj_cells = board.getAdjacentCells(loc[0], loc[1]);
-		wumpusProb.removeSuspects(adj_cells);
+		std::vector<Cell*> adj_cells;
+		std::cout << wumpusProb.suspectNumber() << std::endl;
+		//board.getAdjacentCells(loc[0], loc[1], adj_cells);
+		//wumpusProb.removeSuspects(adj_cells);
 	}
 	if (breeze)
 	{
-		cout << "There is a breeze " << endl;
+		std::cout << "There is a breeze " << std::endl;
 	}
 	if (bump)
 	{
-		cout << "There is a wall" << endl;
+		std::cout << "There is a wall" << std::endl;
 	}
 	return TURN_LEFT;
 	// ======================================================================
@@ -89,6 +88,49 @@ Agent::Action MyAI::getAction
 // ======================================================================
 // YOUR CODE BEGINS
 // ======================================================================
+
+int MyAI::evaluateMove(int* loc)
+{
+	Cell* pos = board.getCell(loc[0], loc[1]);
+	
+	if(pos->wumpusPresent > 0 || pos->pitPresent > 0)
+	{
+		// don't take the chance for now
+		return 0;	
+	}
+	if((int)(pos->wumpusPresent) == 0 && (int)(pos->pitPresent) == 0)
+	{
+		// value bettern than 0
+		return 10;
+	}
+}
+
+std::tuple<int,int> MyAI::bestMove(std::vector<Cell*> moves)
+{
+	if(moves.size() != 0)
+	{
+		Cell* best = moves.at(0);
+		int best_val = 0;
+		int temp = 0;
+		int temp_loc[2] = {0,0};
+		int best_loc[2];
+		for(std::vector<Cell*>::iterator i=moves.begin(); i != moves.end(); i++)
+		{
+			temp_loc[0] = (*i)->x; temp_loc[1] = (*i)->y;
+			temp = evaluateMove(temp_loc);
+			if(temp > best_val)
+			{
+				best_val = temp;
+				best = *i;
+				best_loc[0] = temp_loc[0]; best_loc[1] = temp_loc[1];
+			}
+		}
+		return make_tuple(best_loc[0], best_loc[1]);
+	}	
+	// just return current AI loc if moves is empty
+	// can change this later if we want to...
+	return make_tuple(loc[0], loc[1]);
+}
 
 // This will call back_track function where it will use the path it comes from
 // to climb out of the maze

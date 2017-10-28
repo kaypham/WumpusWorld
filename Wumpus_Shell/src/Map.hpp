@@ -29,8 +29,11 @@ public:
 	// constructor
 	Map();
 
+	// returns a cell pointer given x, y coordinate. Checkes if the cell value is valid, throws error if not
+	Cell* getCell(int x, int y);
+
 	// returns cells of up to 4 adjacent locations on the Map to coordinates x and y
-	vector<Cell*> getAdjacentCells(int x, int y);
+	void getAdjacentCells(int x, int y, vector<Cell*>& cells);
 
 	// After every move, call methods that can determine potential hazards in adjacent 
 	// judging from the map we have so far.

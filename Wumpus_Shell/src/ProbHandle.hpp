@@ -22,11 +22,13 @@ struct Cell
 // Pits will need to be handled differently.
 class ProbHandle
 {
-private:
+public:
+	// constructor
+	ProbHandle();
+
 	// used internally to re-calculate probabilities when a change in suspects occurs
 	void calcProb();
 
-public:
 	// culprit cells in hash table
 	std::vector<Cell*> suspects;
 
@@ -34,10 +36,10 @@ public:
 	int suspectNumber();
 
 	// adds new cells to suspects and modifies the distributed probability among the cells
-	void addSuspects(std::vector<Cell*> cells);
+	void addSuspects(const std::vector<Cell*>& cells);
 
 	// if a cell in this list is a pointer to a cell in the suspects, remove it
-	void removeSuspects(std::vector<Cell*> cells);
+	void removeSuspects(const std::vector<Cell*>& cells);
 };
 
 

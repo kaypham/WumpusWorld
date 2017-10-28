@@ -1,5 +1,10 @@
-#include "ProbHandle.hpp"
+
 #include <iostream>
+#include "ProbHandle.hpp"
+
+ProbHandle::ProbHandle()
+{
+}
 
 
 void ProbHandle::calcProb()
@@ -23,7 +28,7 @@ int ProbHandle::suspectNumber()
 }
 
 
-void ProbHandle::addSuspects(std::vector<Cell*> cells)
+void ProbHandle::addSuspects(const std::vector<Cell*>& cells)
 {
 	suspects.insert(suspects.end(), cells.begin(), cells.end());
 
@@ -31,7 +36,7 @@ void ProbHandle::addSuspects(std::vector<Cell*> cells)
 }
 
 
-void ProbHandle::removeSuspects(std::vector<Cell*> cells)
+void ProbHandle::removeSuspects(const std::vector<Cell*>& cells)
 {
 	//double for loop not too good. suspects maybe should be a table
 	for(int i=0; i<cells.size(); i++)

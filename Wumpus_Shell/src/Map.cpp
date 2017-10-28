@@ -29,9 +29,20 @@ Map::Map()
 	}
 }
 
-vector<Cell*> Map::getAdjacentCells(int x, int y)
+Cell* Map::getCell(int x, int y)
 {
-	vector<Cell*> cells;
+	if(x >= 0 && x <= 9 && y >= 0 && y <= 9)
+	{
+		return &map.at(x).at(y);	
+	}
+	else
+	{
+		throw out_of_range("Map location out of bounds");
+	}
+}
+
+void Map::getAdjacentCells(int x, int y, vector<Cell*>& cells)
+{
 	// make sure cell location is within bounds
 	if(x >= 0 && x <= 9 && y >= 0 && y <= 9)
 	{
@@ -62,7 +73,5 @@ vector<Cell*> Map::getAdjacentCells(int x, int y)
 	{
 		throw out_of_range("Map location out of bounds");
 	}
-
-	return cells;
 }
 

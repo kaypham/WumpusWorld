@@ -20,6 +20,8 @@
 #ifndef MYAI_LOCK
 #define MYAI_LOCK
 
+#include <tuple>
+#include <vector>
 #include "Agent.hpp"
 #include "Map.hpp"
 #include "ProbHandle.hpp"
@@ -46,6 +48,12 @@ public:
 	int loc[2];	
 	Map board;
 	ProbHandle wumpusProb;
+
+	// takes as input a location for the AI and returns a value. The larger the number, the better the position
+	int evaluateMove(int* loc);
+
+	// given a vector of cells representing positions for the AI, return the location of the best move
+	std::tuple<int, int> bestMove(vector<Cell*> moves);
 	
 	Action backTrack();
 	// ======================================================================
