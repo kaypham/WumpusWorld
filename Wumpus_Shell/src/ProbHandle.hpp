@@ -6,9 +6,10 @@
 // Describes the findings of each node
 struct Cell
 {
-	bool breeze; // used if pit or wumpus is 100% present?
+	bool breeze;
 	bool stench;
 	bool visited;
+	bool wall;
 	float pitPresent;
 	float wumpusPresent;
 	int x, y;

@@ -82,6 +82,26 @@ Agent::Action MyAI::getAction
 	if (bump)
 	{
 		std::cout << "There is a wall" << std::endl;
+		// mark cells as walls if AI bumps into one
+		switch(dir)
+		{
+			case UP:
+				if(loc[1] != 9){
+					cout << "marking cell as wall" << endl;
+					for(int x=0; x<9; x++){
+						board.getCell(x, loc[1]+1)->wall = true;
+					}
+				}
+				break;
+			case RIGHT:
+				if(loc[0] != 9){
+					cout << "marking cell as wall" << endl;
+					for(int y=0; y<9; y++){
+						board.getCell(loc[0]+1, y)->wall = true;
+					}
+				}
+				break;
+		}
 	}
 
 	// decide what to do...
@@ -114,16 +134,34 @@ Agent::Action MyAI::getAction
 int MyAI::evaluateMove(int* loc)
 {
 	Cell* pos = board.getCell(loc[0], loc[1]);
-	
+	cout << "cell (" << pos->x << "," << pos->y << ") ";	
+
 	if(pos->wumpusPresent > 0 || pos->pitPresent > 0)
 	{
 		// don't take the chance for now
+		cout << "wumpus:" << pos->wumpusPresent << " pit:" << pos->pitPresent << endl;
 		return 0;	
+	}
+	if(pos->wall)
+	{
+		// don't try to go where there is a wall
+		cout << " wall" << endl;
+		return 0;
 	}
 	if((int)(pos->wumpusPresent) == 0 && (int)(pos->pitPresent) == 0)
 	{
 		// value bettern than 0
-		return 10;
+		if(pos->visited)
+		{
+			cout << " visited" << endl;
+			return 9;
+		}
+		else
+		{
+			// we want to prioritize unvisited spaces over visited
+			cout << " unexplored" << endl;
+			return 10;
+		}
 	}
 }
 
@@ -164,6 +202,7 @@ Agent::Action MyAI::turnAndMove(tuple<int,int> space)
 		switch(dir)
 		{
 			case UP:
+				loc[1] = loc[1]+1;
 				return FORWARD;
 			case DOWN:
 				dir = RIGHT;
@@ -188,6 +227,7 @@ Agent::Action MyAI::turnAndMove(tuple<int,int> space)
 				dir = LEFT;
 				return TURN_RIGHT;
 			case LEFT:
+				loc[0] = loc[0]-1;
 				return FORWARD;
 			case RIGHT:
 				dir = UP;
@@ -209,6 +249,7 @@ Agent::Action MyAI::turnAndMove(tuple<int,int> space)
 				dir = UP;
 				return TURN_RIGHT;
 			case RIGHT:
+				loc[0] = loc[0]+1;
 				return FORWARD;
 		}	
 	}
@@ -221,6 +262,7 @@ Agent::Action MyAI::turnAndMove(tuple<int,int> space)
 				dir = RIGHT;
 				return TURN_RIGHT;
 			case DOWN:
+				loc[1] = loc[1]-1;
 				return FORWARD;
 			case LEFT:
 				dir = DOWN;

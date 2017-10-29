@@ -54,7 +54,7 @@ void Map::getAdjacentCells(int x, int y, vector<Cell*>& cells)
 		// get Down
 		if(y > 0) // can't get down if 0
 		{
-			cells.push_back( &map.at(x).at(y) );
+			cells.push_back( &map.at(x).at(y-1) );
 		}
 
 		// (note) for right and up, boundaries of actualworld may be smaller, but in that case, adjacent walls will be marked with a wall indication.

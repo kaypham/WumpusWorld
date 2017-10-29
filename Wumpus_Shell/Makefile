@@ -25,7 +25,9 @@ RAW_SOURCES = \
 	World.cpp\
 	World.hpp\
 	Map.hpp\
-	Map.cpp
+	Map.cpp\
+	ProbHandle.hpp\
+	ProbHandle.cpp
 
 SOURCE_DIR = src
 BIN_DIR = bin

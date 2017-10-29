@@ -30,14 +30,37 @@ int ProbHandle::suspectNumber()
 
 void ProbHandle::addSuspects(const std::vector<Cell*>& cells)
 {
-	//suspects.insert(suspects.end(), cells.begin(), cells.end());
-	// don't add cells that have been visited before. They cannot have Wumpus
-	for(int i=0; i<cells.size(); i++)
+	// There is only 1 Wumpus, so addSuspects will actually only add new spaces the first time
+	// a stench is smelled. The Wumpus must be in one of the adjacent spaces. Every following time,
+	// the current suspects will be filtered by the input cells with logical AND operation.
+	// don't add cells that have been visited before. They cannot have Wumpus.
+	if(suspects.size() == 0) // add suspects
 	{
-		if(!cells[i]->visited)
+		for(int i=0; i<cells.size(); i++)
 		{
-			suspects.push_back(cells[i]);
+			if(!cells[i]->visited)
+			{
+				suspects.push_back(cells[i]);
+			}
 		}
+	}
+	else // logical AND
+	{
+		std::vector<Cell*> new_suspects;
+		for(int i=0; i<cells.size(); i++)
+		{
+			if(!cells[i]->visited)
+			{
+				for(int j=0; j<suspects.size(); j++)
+				{
+					if(cells[i] == suspects[j])
+					{
+						new_suspects.push_back(suspects[j]);
+					}
+				}
+			}
+		}
+		suspects = new_suspects;
 	}
 	calcProb();
 }
