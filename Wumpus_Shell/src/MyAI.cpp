@@ -29,6 +29,7 @@ MyAI::MyAI() : Agent()
 	// ======================================================================
 	loc[0] = 0;
 	loc[1] = 0;
+	dir = RIGHT;
 	// ======================================================================
 	// YOUR CODE ENDS
 	// ======================================================================
@@ -48,8 +49,13 @@ Agent::Action MyAI::getAction
 	// ======================================================================
 	// YOUR CODE BEGINS
 	// ======================================================================
+	// find all adjacent cells to AI
+	adj_cells.erase(adj_cells.begin(), adj_cells.end());
+	board.getAdjacentCells(loc[0], loc[1], adj_cells);	
+
 	if (glitter)
 	{	
+		cout << "gold!" << endl;
 		isBackTracking = true;
 		return GRAB;	// grab the gold
 	}
@@ -61,15 +67,13 @@ Agent::Action MyAI::getAction
 	{
 		std::cout << "There is a stench" << std::endl;
 		// get adjacent spaces and assign probabilities to them
-		//wumpusProb.addSuspects( board.getAdjacentCells(loc[0], loc[1]) );
+		wumpusProb.addSuspects(adj_cells);
+		
 	}
 	else	// if no stench is detected...
 	{
 		// remove suspect spaces if possible
-		std::vector<Cell*> adj_cells;
-		std::cout << wumpusProb.suspectNumber() << std::endl;
-		//board.getAdjacentCells(loc[0], loc[1], adj_cells);
-		//wumpusProb.removeSuspects(adj_cells);
+		wumpusProb.removeSuspects(adj_cells);
 	}
 	if (breeze)
 	{
@@ -79,7 +83,25 @@ Agent::Action MyAI::getAction
 	{
 		std::cout << "There is a wall" << std::endl;
 	}
-	return TURN_LEFT;
+
+	// decide what to do...
+	tuple<int,int> space = bestMove(adj_cells);
+	// turn and move foward to desired space...
+	Agent::Action myMove = turnAndMove(space);
+	cout << "move: ";
+	switch(myMove)
+	{
+		case TURN_LEFT:
+			cout << "left" << endl;
+			break;
+		case TURN_RIGHT:
+			cout << "right" << endl;
+			break;
+		case FORWARD:
+			cout << "forward" << endl;
+			break;
+	}
+	return myMove;
 	// ======================================================================
 	// YOUR CODE ENDS
 	// ======================================================================
@@ -105,7 +127,7 @@ int MyAI::evaluateMove(int* loc)
 	}
 }
 
-std::tuple<int,int> MyAI::bestMove(std::vector<Cell*> moves)
+tuple<int,int> MyAI::bestMove(std::vector<Cell*> moves)
 {
 	if(moves.size() != 0)
 	{
@@ -118,7 +140,7 @@ std::tuple<int,int> MyAI::bestMove(std::vector<Cell*> moves)
 		{
 			temp_loc[0] = (*i)->x; temp_loc[1] = (*i)->y;
 			temp = evaluateMove(temp_loc);
-			if(temp > best_val)
+			if(temp >= best_val)
 			{
 				best_val = temp;
 				best = *i;
@@ -130,6 +152,87 @@ std::tuple<int,int> MyAI::bestMove(std::vector<Cell*> moves)
 	// just return current AI loc if moves is empty
 	// can change this later if we want to...
 	return make_tuple(loc[0], loc[1]);
+}
+
+
+Agent::Action MyAI::turnAndMove(tuple<int,int> space)
+{
+	//determine direction
+	// DIRECTION UP
+	if( get<0>(space) == loc[0] && get<1>(space) == loc[1]+1)
+	{
+		switch(dir)
+		{
+			case UP:
+				return FORWARD;
+			case DOWN:
+				dir = RIGHT;
+				return TURN_LEFT;
+			case LEFT:
+				dir = UP;
+				return TURN_RIGHT;
+			case RIGHT:
+				dir = UP;
+				return TURN_LEFT;
+		}
+	}
+	// DIRECTION LEFT
+	if( get<0>(space) == loc[0]-1 && get<1>(space) == loc[1])
+	{
+		switch(dir)
+		{
+			case UP:
+				dir = LEFT;
+				return TURN_LEFT;
+			case DOWN:
+				dir = LEFT;
+				return TURN_RIGHT;
+			case LEFT:
+				return FORWARD;
+			case RIGHT:
+				dir = UP;
+				return TURN_LEFT;
+		}	
+	}
+	// DIRECTION RIGHT
+	if( get<0>(space) == loc[0]+1 && get<1>(space) == loc[1])
+	{
+		switch(dir)
+		{
+			case UP:
+				dir = RIGHT;
+				return TURN_RIGHT;
+			case DOWN:
+				dir = RIGHT;
+				return TURN_LEFT;
+			case LEFT:
+				dir = UP;
+				return TURN_RIGHT;
+			case RIGHT:
+				return FORWARD;
+		}	
+	}
+	// DIRECTION DOWN
+	if( get<0>(space) == loc[0] && get<1>(space) == loc[1]-1)
+	{
+		switch(dir)
+		{
+			case UP:
+				dir = RIGHT;
+				return TURN_RIGHT;
+			case DOWN:
+				return FORWARD;
+			case LEFT:
+				dir = DOWN;
+				return TURN_LEFT;
+			case RIGHT:
+				dir = DOWN;
+				return TURN_RIGHT;
+		}	
+	}
+
+	cout << "couldn't resolve desired direction :(" << endl;
+	return FORWARD;
 }
 
 // This will call back_track function where it will use the path it comes from

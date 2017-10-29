@@ -43,17 +43,29 @@ public:
 	// ======================================================================
 	// YOUR CODE BEGINS
 	// ======================================================================
+	enum Direction
+	{
+		UP,
+	 	DOWN,
+		LEFT,
+		RIGHT
+	};
+
+	Direction dir;
 	bool isBackTracking = false;
 
 	int loc[2];	
 	Map board;
 	ProbHandle wumpusProb;
-
+		
+	vector<Cell*> adj_cells;
 	// takes as input a location for the AI and returns a value. The larger the number, the better the position
 	int evaluateMove(int* loc);
 
 	// given a vector of cells representing positions for the AI, return the location of the best move
 	std::tuple<int, int> bestMove(vector<Cell*> moves);
+
+	Action turnAndMove(tuple<int,int> space);
 	
 	Action backTrack();
 	// ======================================================================

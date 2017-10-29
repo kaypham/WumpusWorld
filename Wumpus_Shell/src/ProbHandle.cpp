@@ -30,8 +30,15 @@ int ProbHandle::suspectNumber()
 
 void ProbHandle::addSuspects(const std::vector<Cell*>& cells)
 {
-	suspects.insert(suspects.end(), cells.begin(), cells.end());
-
+	//suspects.insert(suspects.end(), cells.begin(), cells.end());
+	// don't add cells that have been visited before. They cannot have Wumpus
+	for(int i=0; i<cells.size(); i++)
+	{
+		if(!cells[i]->visited)
+		{
+			suspects.push_back(cells[i]);
+		}
+	}
 	calcProb();
 }
 
